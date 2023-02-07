@@ -257,7 +257,7 @@ def main(args):
 
     # Convert VDS
     # If no specific chromosome specified, cycle through chr1 to chr21, chrM, chrX, chrY
-    if (not args.chr):
+    if (args.chr == 0):
         chrs = list(range(1, 23)) + ['M', 'X', 'Y']
         for c in chrs:
             path = f"{args.out}_chr{c}.vcf.bgz"
