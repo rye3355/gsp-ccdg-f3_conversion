@@ -26,8 +26,7 @@ def get_bucket(
     :param data_type: Whether data is from CCDG exomes or genomes
     :return: Path prefix to CCDG bucket
     """
-    bucket = "gs://fc-secure-9e3357c0-389c-41d7-94ee-56673db6b75f/" if data_type == "genomes" else "gs://fc-secure-7e69c896-d6c0-4a4e-8490-42cb2d4fdebf/"
-    return bucket
+    return "gs://fc-secure-9e3357c0-389c-41d7-94ee-56673db6b75f/" if data_type == "genomes" else "gs://fc-secure-7e69c896-d6c0-4a4e-8490-42cb2d4fdebf/"
 
 
 
@@ -76,6 +75,8 @@ def prepare_vds_to_mt(
 
     # Filter VDS to chr
     vds = hl.vds.filter_chromosomes(vds, keep = chr)
+    n = vds.variant_data.count()
+    logger.info(f"Dimensions: {n}")
 
     # Compute GT
     vds.variant_data = vds.variant_data.annotate_entries(GT = hl.vds.lgt_to_gt(vds.variant_data.LGT, vds.variant_data.LA))
@@ -242,9 +243,11 @@ def export_VDS_to_VCF(
 
 
 def main(args):
-    data_type = "exomes" if args.exomes else "genomes"
+    # Initialize with temporary 4-day bucket
     hl.init(default_reference="GRCh38",
-            tmp_dir="gs://bgen-temp/tmp_dir")
+            tmp_dir="gs://gsp-ccdg-f3-tmp-4day/conversion_runs/")
+    
+    data_type = "exomes" if args.exomes else "genomes"
 
     # Grab workspace bucket prefix (for either exomes or genomes)
     bucket = get_bucket(data_type)
@@ -253,7 +256,7 @@ def main(args):
     vds = read_in_vds(args.vds)
 
     # Convert VDS
-    # If no specific chromosome specified, cycle through chr1 to chr21
+    # If no specific chromosome specified, cycle through chr1 to chr21, chrM, chrX, chrY
     if (not args.chr):
         chrs = list(range(1, 23)) + ['M', 'X', 'Y']
         for c in chrs:
@@ -285,7 +288,7 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "--chr",
-        help="Chromosome to subset down to and export as VCF. If no input, run on chr1-chr21",
+        help="Chromosome to subset down to and export as VCF. If no input, run on chr1-chr22, chrM, chrX, chrY",
         default=0,
         type=int,
     )
