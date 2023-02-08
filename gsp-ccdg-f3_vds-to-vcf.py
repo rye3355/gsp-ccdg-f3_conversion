@@ -228,7 +228,7 @@ def export_VDS_to_VCF(
                                 'Number': '1',
                                 'Type': 'Float'},
                         'AS_lowqual': {'Description': 'AS_lowqual classification. Passing variants have value FALSE.',
-                                'Number': '1',
+                                'Number': '0',
                                 'Type': 'Flag'},
                         'is_snv': {'Description': 'Whether a variant is an SNV',
                                 'Number': '0',
