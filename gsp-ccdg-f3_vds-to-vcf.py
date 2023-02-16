@@ -75,8 +75,6 @@ def prepare_vds_to_mt(
 
     # Filter VDS to chr
     vds = hl.vds.filter_chromosomes(vds, keep = chr)
-    n = vds.variant_data.count()
-    logger.info(f"Dimensions: {n}")
 
     # Compute GT
     vds.variant_data = vds.variant_data.annotate_entries(GT = hl.vds.lgt_to_gt(vds.variant_data.LGT, vds.variant_data.LA))
@@ -86,6 +84,9 @@ def prepare_vds_to_mt(
 
     # Split multiallelic sites
     mt = hl.split_multi_hts(mt)
+
+    n = mt.count()
+    logger.info(f"Dimensions: {n}")
 
     return mt
 
