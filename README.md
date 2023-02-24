@@ -5,7 +5,7 @@ Script to annotate and convert gsp-ccdg-f3 VDS files to standard VCF format.
 Variant filter status annotated with Wenhan's suggested variant qc metrics, and additional [was_split, AS_VQSLOD, AS_lowqual, is_snv] fields also included.
 
 A variant is labelled PASS if:
-* (info.AS_lowqual != True) & (info.AS_VQSLOD < [cutoff] | is.snv) & (info.AS_VQSLOD < [cutoff] | ~is.snv), depending on genomes or exomes data
+* (info.AS_lowqual != True) & (info.AS_VQSLOD >= [cutoff] | is.snv) & (info.AS_VQSLOD >= [cutoff] | ~is.snv), depending on genomes or exomes data
 * See here for more detailed information: https://docs.google.com/document/d/1kG7Hf2QhDKmhhRfmmhnBkC1HLX0mj2jZ38Z4Jp427qs/edit?usp=sharing
 
 
