@@ -134,8 +134,8 @@ def compute_passing(
 ) -> hl.MatrixTable:
     """
     Compute variant passing status based on Wenhan's default recommendations:
-    If WGS: (AS_lowqual not True) and (AS_VQSLOD < -2.4464 | SNV) and (AS_VQSLOD < -0.3533 | INDEL)
-    If WES: (AS_lowqual not True) and (AS_VQSLOD < -7.4038 | SNV) and (AS_VQSLOD < -2.8062 | INDEL)
+    If WGS: (AS_lowqual not True) and (AS_VQSLOD >= -2.4464 | SNV) and (AS_VQSLOD >= -0.3533 | INDEL)
+    If WES: (AS_lowqual not True) and (AS_VQSLOD >= -7.4038 | SNV) and (AS_VQSLOD >= -2.8062 | INDEL)
     :param mt: MT to be annotated
     :param data_type: Whether data is from CCDG exomes or genomes
     :return: MT annotated with filter variant field
@@ -149,8 +149,8 @@ def compute_passing(
     # Compute PASS/FAIL status
     mt = mt.annotate_rows(filters =
             hl.if_else((~mt.AS_lowqual) &
-                     (((mt.is_snv) & (mt.AS_VQSLOD <  snv_cutoff))|
-                      ((~mt.is_snv) & (mt.AS_VQSLOD <  indel_cutoff))),
+                     (((mt.is_snv) & (mt.AS_VQSLOD >= snv_cutoff))|
+                      ((~mt.is_snv) & (mt.AS_VQSLOD >= indel_cutoff))),
                       {"PASS"}, {"FAIL"}))
 
     return mt
