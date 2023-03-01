@@ -85,9 +85,6 @@ def prepare_vds_to_mt(
     # Split multiallelic sites
     mt = hl.split_multi_hts(mt)
 
-    n = mt.count()
-    logger.info(f"Dimensions: {n}")
-
     return mt
 
 
@@ -154,6 +151,7 @@ def compute_passing(
                       {"PASS"}, {"FAIL"}))
 
     return mt
+
 
 
 
@@ -225,7 +223,7 @@ def export_VDS_to_VCF(
                 'info': {'was_split': {'Description': 'True if this variant was originally multiallelic, otherwise False.',
                                 'Number': '0',
                                 'Type': 'Flag'},
-                        'AS_VQSLOD': {'Description': f"AS_VQSLOD score. Passing variants have score < {snv_cutoff} if SNV and < {indel_cutoff} otherwise (indel).",
+                        'AS_VQSLOD': {'Description': f"AS_VQSLOD score. Passing variants have score >= {snv_cutoff} if SNV and >= {indel_cutoff} otherwise (indel).",
                                 'Number': '1',
                                 'Type': 'Float'},
                         'AS_lowqual': {'Description': 'AS_lowqual classification. Passing variants have value FALSE.',
