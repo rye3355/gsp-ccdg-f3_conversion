@@ -145,10 +145,10 @@ def compute_passing(
 
     # Compute PASS/FAIL status
     mt = mt.annotate_rows(filters =
-            hl.if_else((~mt.AS_lowqual) &
-                     (((mt.is_snv) & (mt.AS_VQSLOD >= snv_cutoff))|
-                      ((~mt.is_snv) & (mt.AS_VQSLOD >= indel_cutoff))),
-                      {"PASS"}, {"FAIL"}))
+            hl.if_else((~hl.is_missing(rows.AS_VQSLOD)) & (~mt.AS_lowqual) &
+                        (((mt.is_snv) & (mt.AS_VQSLOD >= snv_cutoff))|
+                        ((~mt.is_snv) & (mt.AS_VQSLOD >= indel_cutoff))),
+                        {"PASS"}, {"FAIL"}))
 
     return mt
 
