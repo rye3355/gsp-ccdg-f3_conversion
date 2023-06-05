@@ -78,6 +78,7 @@ def prepare_vds_to_mt(
 
     # Compute GT
     vds.variant_data = vds.variant_data.annotate_entries(GT = hl.vds.lgt_to_gt(vds.variant_data.LGT, vds.variant_data.LA))
+    vds.variant_data = vds.variant_data.drop(vds.variant_data.LGT)
 
     # Densify VDS
     mt = hl.vds.to_dense_mt(vds)
