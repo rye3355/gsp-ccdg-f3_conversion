@@ -17,13 +17,15 @@ Annotations for AS_lowqual and AS_VQSLOD are pulled from Wenhan's annotation Hai
 
 
 Example of how to run:
-* First, spin up workers on dataproc using Hail:
-  * hailctl dataproc start [cluster-name] --num-workers 6 --num-secondary-workers 120 
-  * Can increase number of preemptibles (--num-secondary-workers) and non-preemptibles (--num-workers)
+* First, spin up workers on dataproc using Hail and autoscaling policy:
+  * hailctl dataproc start [cluster-name] --num-workers 8 --autoscaling-policy=autoscale-8-200 
+  * Automatically increases/decreases number of preemptibles (--num-secondary-workers) to 200 and of non-preemptibles (--num-workers) to 8 as needed
   * From Tim: "It's not bad practice to make sure your ratio of preemptible to non-preemptible isn't larger than around 20:1"
 * Next, submit script with relevant flags
   * Running on ONLY CHROMOSOME 21 of exome dataset:
      * hailctl dataproc submit [cluster-name] gsp-ccdg-f3_vds-to-vcf.py --exomes --vds gs://fc-secure-7e69c896-d6c0-4a4e-8490-42cb2d4fdebf/ccdg_exome_203k.vds/ --chr 21 --out gs://bgen-temp/ccdg_exome_203k/ccdg_exome_203k
+  * Running on ONLY CHROMOSOME 1 of genome dataset:
+     * hailctl dataproc submit rye-conversion gsp-ccdg-f3_vds-to-vcf.py --vds gs://fc-secure-9e3357c0-389c-41d7-94ee-56673db6b75f/ccdg_genome_136k.vds/ --chr 1 --out gs://bgen-temp/ccdg_genome_136k/ccdg_genome_136k
   * Running on ALL CHROMOSOMES of genome dataset:
      * hailctl dataproc submit [cluster-name] gsp-ccdg-f3_vds-to-vcf.py --vds gs://fc-secure-9e3357c0-389c-41d7-94ee-56673db6b75f/ccdg_genome_136k.vds/ --out gs://bgen-temp/ccdg_genome_136k/ccdg_genome_136k
   * Running on ALL CHROMOSOMES of exome dataset:
