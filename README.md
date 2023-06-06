@@ -24,8 +24,8 @@ Example of how to run:
 * Next, submit script with relevant flags
   * Running on ONLY CHROMOSOME 21 of exome dataset:
      * hailctl dataproc submit [cluster-name] gsp-ccdg-f3_vds-to-vcf.py --exomes --vds gs://fc-secure-7e69c896-d6c0-4a4e-8490-42cb2d4fdebf/ccdg_exome_203k.vds/ --chr 21 --out gs://bgen-temp/ccdg_exome_203k/ccdg_exome_203k
-  * Running on ONLY CHROMOSOME 1 of genome dataset:
-     * hailctl dataproc submit rye-conversion gsp-ccdg-f3_vds-to-vcf.py --vds gs://fc-secure-9e3357c0-389c-41d7-94ee-56673db6b75f/ccdg_genome_136k.vds/ --chr 1 --out gs://bgen-temp/ccdg_genome_136k/ccdg_genome_136k
+  * Running on CHROMOSOME M, X, Y of genome dataset:
+     * hailctl dataproc submit [cluster-name] gsp-ccdg-f3_vds-to-vcf.py --vds gs://fc-secure-9e3357c0-389c-41d7-94ee-56673db6b75f/ccdg_genome_136k.vds/ --chr M,X,Y --out gs://bgen-temp/ccdg_genome_136k/ccdg_genome_136k
   * Running on ALL CHROMOSOMES of genome dataset:
      * hailctl dataproc submit [cluster-name] gsp-ccdg-f3_vds-to-vcf.py --vds gs://fc-secure-9e3357c0-389c-41d7-94ee-56673db6b75f/ccdg_genome_136k.vds/ --out gs://bgen-temp/ccdg_genome_136k/ccdg_genome_136k
   * Running on ALL CHROMOSOMES of exome dataset:
