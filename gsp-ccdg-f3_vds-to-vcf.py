@@ -256,15 +256,19 @@ def main(args):
     vds = read_in_vds(args.vds)
 
     # Convert VDS
-    # If no specific chromosome specified, cycle through chr1 to chr21, chrM, chrX, chrY
+    # If no specific chromosome specified, cycle through chr1 to chr23, chrM, chrX, chrY
+    chrs = list(range(1, 23)) + ['M', 'X', 'Y']
     if (args.chr == 0):
-        chrs = list(range(1, 23)) + ['M', 'X', 'Y']
         for c in chrs:
             path = f"{args.out}_chr{c}.vcf.bgz"
+            logger.info(f"Exporting to: {path}")
             export_VDS_to_VCF(vds, data_type, bucket, f"chr{c}", path)
     else:
-        path = f"{args.out}_chr{args.chr}.vcf.bgz"
-        export_VDS_to_VCF(vds, data_type, bucket, f"chr{args.chr}", path)
+        for c in args.chr.split(","):
+            assert(c in [str(x) for x in chrs])
+            path = f"{args.out}_chr{c}.vcf.bgz"
+            logger.info(f"Exporting to: {path}")
+            export_VDS_to_VCF(vds, data_type, bucket, f"chr{c}", path)
 
 
     logger.info("Copying log to logging bucket...")
@@ -288,9 +292,9 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "--chr",
-        help="Chromosome to subset down to and export as VCF. If no input, run on chr1-chr22, chrM, chrX, chrY",
+        help="Comma-separated list of chromosomes to subset down to and export as VCF. If no input, run on chr1-chr22, chrM, chrX, chrY",
         default=0,
-        type=int,
+        type=str,
     )
     parser.add_argument(
         "--out",
